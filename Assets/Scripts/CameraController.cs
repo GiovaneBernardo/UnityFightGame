@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
+    public Transform CharacterFollowerTransform;
     public Transform CharacterTransform;
     public Transform TargetTransform;
     public float ZoomLevel = 1.0f;
@@ -29,12 +30,13 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetAxis("Mouse X") != 0.0f)
         {
-            CharacterTransform.rotation *= Quaternion.Euler(new Vector3(0.0f, Input.GetAxis("Mouse X") * Sensitivity.x * Time.deltaTime, 0.0f));
+            CharacterFollowerTransform.rotation *= Quaternion.Euler(new Vector3(0.0f, Input.GetAxis("Mouse X") * Sensitivity.x * Time.deltaTime, 0.0f));
         }
         if (Input.GetAxis("Mouse Y") != 0.0f)
         {
             TargetTransform.rotation *= Quaternion.Euler(new Vector3(Input.GetAxis("Mouse Y") * -Sensitivity.y * Time.deltaTime, 0.0f, 0.0f));
         }
 
+        CharacterFollowerTransform.position = CharacterTransform.position;
     }
 }
