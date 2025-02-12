@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 517c428e7a5295c4db6fe7932b1f906e, type: 3}
+  m_Name: FireBall1
+  m_EditorClassIdentifier: 
+  damage: 35
+  areaOfEffect: 3
+  maxEnemiesToHit: 1
+  cooldown: 2
+  speed: 15
+  animationName: StaffThrowBall
+  animationOverride: {fileID: 0}
