@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    public List<GameObject> enemiesPrefab = new List<GameObject>();
+    public List<EnemyData> EnemiesData = new List<EnemyData>();
     void Start()
     {
         for (int i = 0; i < 100; ++i)

@@ -2,23 +2,9 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct AttackData
-{
-    public float Damage;
-    public float AreaOfEffect; // Meters
-    public int MaxEnemiesToHit;
-    public float Cooldown; // Seconds
-    public float Speed; // Speed of the projectile, can be 0 if attack isnt a projectile
-    public float TimeToDisappear; // Seconds
-    public float SpawnTime;
-    public float SpawnMetersAhead;
-    public string AnimationName;
-    public Animator Animator;
-}
-
 public class AttackMonoBehaviour : MonoBehaviour
 {
-    public AttackData Data;
+    public AttackData Data = new AttackData();
     public virtual void Start() { }
     public void AttackCommonUpdate()
     {
@@ -28,9 +14,15 @@ public class AttackMonoBehaviour : MonoBehaviour
         }
     }
 
+    public virtual void SetPosition(Transform centerTransform, Transform characterTransform)
+    {
+        transform.position = centerTransform.position + centerTransform.forward * Data.SpawnMetersAhead;
+    }
+
     public virtual void Destroy() {
         Destroy(gameObject);
     }
+
 }
 
 

@@ -1,4 +1,6 @@
+using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class CameraController : MonoBehaviour
     public bool cameraLockedToTransform = false;
     public Transform lockedTransformToLook;
     public LayerMask lockableTargetMask;
+    public Transform TargetEnemy;
     void Start()
     {
         Cursor.visible = false;
@@ -42,6 +45,18 @@ public class CameraController : MonoBehaviour
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+        }
+
+        if (!Input.GetMouseButton(1) && Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Physics.Raycast(transform.position, ray.direction, out hit);
+            if(hit.collider != null && hit.transform.gameObject.layer == 6)
+            {
+                TargetEnemy = hit.transform;
+                TargetEnemy.GetComponent<EnemyScript>().AddPlayerTargetingMe(CharacterTransform);
+            }
         }
 
         if (cameraLockedToTransform)
@@ -126,14 +141,14 @@ public class CameraController : MonoBehaviour
         bool closeToTarget = Vector3.Distance(new Vector3(lockedTransformToLook.position.x, CharacterFollowerTransform.position.y, lockedTransformToLook.position.z), CharacterFollowerTransform.position) < 1.0f;
         if (closeToTarget)
         {
-            Vector3 average = (CharacterTransform.position + lockedTransformToLook.position) / 2;
+            Vector3 average = (CharacterTransform.position + lockedTransformToLook.position + new Vector3(0.0f, 0.45f, 0.0f)) / 2;
             CameraLookAt(average);
             CharacterFollowerTransform.position = average;
             transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -2.5f / ZoomLevel * 2.0f);
         }
         else
         {
-            CameraLookAt(lockedTransformToLook.position);
+            CameraLookAt(lockedTransformToLook.position + new Vector3(0.0f, 0.9f, 0.0f));
         }
     }
 

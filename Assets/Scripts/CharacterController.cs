@@ -86,7 +86,7 @@ public class CharacterController : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            animator.SetTrigger("Attack1");
+            //animator.SetTrigger("Attack1");
         }
         if (Input.GetKey(KeyCode.E))
         {
@@ -95,6 +95,10 @@ public class CharacterController : MonoBehaviour
         if (Input.GetKey(KeyCode.Q))
         {
             SummonAttack("GroundSpikes1");
+        }
+        if (Input.GetKey(KeyCode.F))
+        {
+            SummonAttack("GroundExplosion1Attack");
         }
     }
 
@@ -119,8 +123,7 @@ public class CharacterController : MonoBehaviour
             attacksCooldown[name] = Time.time;
             GameObject obj = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), CameraCenterTargetTransform.rotation);
             AttackData attackData = prefab.GetComponent<AttackMonoBehaviour>().Data;
-            Debug.Log(attackData.SpawnMetersAhead);
-            obj.transform.position = CameraCenterTargetTransform.position + CameraCenterTargetTransform.forward * attackData.SpawnMetersAhead;
+            obj.GetComponent<AttackMonoBehaviour>().SetPosition(CameraCenterTargetTransform, transform);
             if (obj)
             {
                 //obj.AddComponent<FireBall1Attack>();
@@ -194,6 +197,7 @@ public class CharacterController : MonoBehaviour
             blendTreeMovement.x = Mathf.Clamp(UpdateMovementAxis(blendTreeMovement.x, KeyCode.A, -1.5f, 1.5f, 0.5f, Input.GetAxis("Horizontal") * acceleration, true), -1.5f, 1.5f);
             blendTreeMovement.y = Mathf.Clamp(UpdateMovementAxis(blendTreeMovement.y, KeyCode.W, -1.5f, 1.5f, 0.5f, Input.GetAxis("Vertical") * acceleration, true), -1.5f, 1.5f);
         }
+
         animator.SetFloat("XBlendWalk", blendTreeMovement.x);
         animator.SetFloat("YBlendWalk", blendTreeMovement.y);
         Vector3 direction = new Vector3(0.0f, 0.0f, 0.0f);
