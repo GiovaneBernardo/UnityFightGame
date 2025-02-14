@@ -124,11 +124,7 @@ public class CharacterController : MonoBehaviour
             GameObject obj = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), CameraCenterTargetTransform.rotation);
             AttackData attackData = prefab.GetComponent<AttackMonoBehaviour>().Data;
             obj.GetComponent<AttackMonoBehaviour>().SetPosition(CameraCenterTargetTransform, transform);
-            if (obj)
-            {
-                //obj.AddComponent<FireBall1Attack>();
-                //obj.GetComponent<FireBall1Attack>().StartAnimation();
-            }
+            obj.GetComponent<AttackMonoBehaviour>().OwnerCharacter = gameObject;
         }
     }
 

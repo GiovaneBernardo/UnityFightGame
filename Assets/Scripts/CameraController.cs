@@ -59,13 +59,12 @@ public class CameraController : MonoBehaviour
             }
         }
 
+        HandleInputs();
+
         if (cameraLockedToTransform)
         {
             UpdateLockedCamera();
         }
-
-        HandleInputs();
-
     }
 
     private void SmoothCameraMovement()
@@ -120,7 +119,7 @@ public class CameraController : MonoBehaviour
             ZoomLevel -= Mathf.Max(10.0f * ZoomLevel * Time.deltaTime, 0.01f);
 
         // Middle mouse button, lock target
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(2) || (cameraLockedToTransform && lockedTransformToLook == null))
         {
             if (cameraLockedToTransform)
             {

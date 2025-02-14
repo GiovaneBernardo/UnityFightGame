@@ -23,7 +23,7 @@ public class GroundSpikes1Attack : AttackMonoBehaviour
         Data.TimeToDisappear = 3.0f;
         Data.SpawnMetersAhead = 3.0f;
         Data.SpawnTime = Time.time;
-        Data.AnimationName = "SimpleAnimation";
+        Data.AnimationName = "GroundSpikes1";
     }
 
     public void StartAnimation()

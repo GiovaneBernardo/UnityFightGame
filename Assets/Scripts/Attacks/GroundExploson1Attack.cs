@@ -12,10 +12,10 @@ public class GroundExplosion1Attack : AttackMonoBehaviour
         Data.MaxEnemiesToHit = 1;
         Data.Cooldown = 1.0f;
         Data.Speed = 16.0f;
-        Data.TimeToDisappear = 3.0f;
+        Data.TimeToDisappear = 1.0f;
         Data.SpawnMetersAhead = 3.0f;
         Data.SpawnTime = Time.time;
-        Data.AnimationName = "SimpleAnimation";
+        Data.AnimationName = "GroundExplosion1Attack";
     }
 
     public void StartAnimation()
@@ -34,13 +34,5 @@ public class GroundExplosion1Attack : AttackMonoBehaviour
     public override void SetPosition(Transform centerTransform, Transform characterTransform)
     {
         transform.position = characterTransform.position;
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "AIEnemy")
-        {
-            Debug.Log("Hit enemy");
-        }
     }
 }

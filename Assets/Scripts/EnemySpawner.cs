@@ -26,10 +26,19 @@ public class EnemySpawner : MonoBehaviour
             // Instantiate the prefab
             EnemyData randomEnemyData = EnemiesData[Random.Range(0, EnemiesData.Count)];
             Vector3 randomPositionInsideArea = GetComponent<EditableArea>().GetRandomPosition(true);
-            Instantiate(randomEnemyData.Prefab, randomPositionInsideArea, Quaternion.identity);
-
+            GameObject obj = Instantiate(randomEnemyData.Prefab, randomPositionInsideArea, Quaternion.identity);
+            obj.GetComponent<EnemyScript>().OwnerSpawner = this;
 
             CurrentEnemies++;
         }
+    }
+
+    public void KillEnemy(GameObject enemy)
+    {
+        if (enemy == null)
+            return;
+        Destroy(enemy);
+        CurrentEnemies--;
+        SpawnNewEnemy();
     }
 }

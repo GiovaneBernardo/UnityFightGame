@@ -15,7 +15,7 @@ public class FireBall1Attack : AttackMonoBehaviour
         Data.TimeToDisappear = 5.0f;
         Data.SpawnMetersAhead = 1.0f;
         Data.SpawnTime = Time.time;
-        Data.AnimationName = "SimpleAnimation";
+        Data.AnimationName = "FireBall1";
     }
 
     public void StartAnimation()
@@ -28,5 +28,10 @@ public class FireBall1Attack : AttackMonoBehaviour
         transform.position += transform.forward * (Data.Speed * Time.deltaTime);
 
         AttackCommonUpdate();
+    }
+
+    public override void AfterHit(Transform enemy)
+    {
+        Destroy(gameObject);
     }
 }
