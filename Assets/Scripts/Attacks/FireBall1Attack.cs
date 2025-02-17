@@ -2,20 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBall1Attack : AttackMonoBehaviour
+[CreateAssetMenu(menuName = "Scriptable Objects/FireBall1")]
+public class FireBall1Attack : AttackBase
 {
 
     public override void Start()
     {
-        Data.Damage = 5.0f;
-        Data.AreaOfEffect = 1.0f;
-        Data.MaxEnemiesToHit = 1;
-        Data.Cooldown = 1.0f;
-        Data.Speed = 16.0f;
-        Data.TimeToDisappear = 5.0f;
-        Data.SpawnMetersAhead = 1.0f;
-        Data.SpawnTime = Time.time;
-        Data.AnimationName = "FireBall1";
+
     }
 
     public void StartAnimation()
@@ -23,9 +16,9 @@ public class FireBall1Attack : AttackMonoBehaviour
         //Data.Animator.Play(Data.AnimationName, 1);
     }
 
-    public void Update()
+    public override void Update()
     {
-        transform.position += transform.forward * (Data.Speed * Time.deltaTime);
+        transform.position += transform.forward * (Speed * Time.deltaTime);
 
         AttackCommonUpdate();
     }

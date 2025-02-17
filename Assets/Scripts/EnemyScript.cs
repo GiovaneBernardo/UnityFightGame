@@ -5,7 +5,8 @@ public class EnemyScript : MonoBehaviour
 {
     public float MaxHealth = 50;
     public float CurrentHealth = 50;
-    public List<AttackData> EquippedAttacks = new List<AttackData>();
+    [SerializeReference]
+    public List<AttackBase> EquippedAttacks = new List<AttackBase>();
 
     public GameObject HealthCanvasObject;
 
@@ -159,35 +160,30 @@ public class EnemyScript : MonoBehaviour
     {
         if (EquippedAttacks.Count <= 0)
             return;
-
-        SummonAttack(EquippedAttacks[Random.Range(0, EquippedAttacks.Count)].AnimationName);
+        SummonAttack(EquippedAttacks[Random.Range(0, EquippedAttacks.Count)]);
     }
 
     private Dictionary<string, GameObject> _loadedPrefabs = new Dictionary<string, GameObject>();
     private Dictionary<string, float> _attacksCooldown = new Dictionary<string, float>();
-    void SummonAttack(string name)
+    void SummonAttack(AttackBase attack)
     {
-        GameObject prefab;
-        if (_loadedPrefabs.ContainsKey("AttackPrefabs/" + name))
-            prefab = _loadedPrefabs["AttackPrefabs/" + name];
-        else
-        {
-            prefab = Resources.Load<GameObject>("AttackPrefabs/" + name);
-            _loadedPrefabs.Add("AttackPrefabs/" + name, prefab);
-        }
+
+        GameObject prefab = attack.Prefab;
         if (prefab != null)
         {
-            if (!_attacksCooldown.ContainsKey(name))
-                _attacksCooldown.Add(name, 0);
-            prefab.GetComponent<AttackMonoBehaviour>().Start();
-            bool cooldownIsOver = Time.time - _attacksCooldown[name] > prefab.GetComponent<AttackMonoBehaviour>().Data.Cooldown;
+            if (!_attacksCooldown.ContainsKey(attack.name))
+                _attacksCooldown.Add(attack.name, 0);  
+
+            bool cooldownIsOver = Time.time - _attacksCooldown[attack.name] > attack.Cooldown;
             if (!cooldownIsOver)
                 return;
-            _attacksCooldown[name] = Time.time;
+            _attacksCooldown[attack.name] = Time.time;
             GameObject obj = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), transform.rotation);
-            AttackData attackData = prefab.GetComponent<AttackMonoBehaviour>().Data;
-            obj.GetComponent<AttackMonoBehaviour>().SetPosition(transform, transform);
-            obj.GetComponent<AttackMonoBehaviour>().OwnerCharacter = gameObject;
+
+            obj.GetComponent<AttackHandler>().Start();
+            obj.GetComponent<AttackHandler>().AttackBehaviour.SetPosition(transform, transform);
+            obj.GetComponent<AttackHandler>().AttackBehaviour.CasterGameObject = gameObject;
+            obj.GetComponent<AttackHandler>().AttackBehaviour.CasterIsPlayer = false;
         }
     }
 }

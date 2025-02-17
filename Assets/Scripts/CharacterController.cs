@@ -3,9 +3,12 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviour
 {
+    public float MaxHealth = 50;
+    public float CurrentHealth = 50;
     public Transform CameraCenterTargetTransform;
     public Transform characterFollowerTransform;
     private Animator animator;
@@ -16,7 +19,9 @@ public class CharacterController : MonoBehaviour
     int velocityHash;
     int blendYHash;
 
+    [HideInInspector]
     public Transform footLeftTransform;
+    [HideInInspector]
     public Transform footRightTransform;
 
     public Vector2 blendTreeMovement = Vector2.zero;
@@ -31,7 +36,8 @@ public class CharacterController : MonoBehaviour
 
     Dictionary<string, GameObject> loadedPrefabs = new Dictionary<string, GameObject>();
 
-    Dictionary<string, GameObject> possibleAttacks = new Dictionary<string, GameObject>();
+    public List<AttackBase> EquippedAttacks = new List<AttackBase>();
+    private Dictionary<string, float> _attacksCooldown = new Dictionary<string, float>();
     Dictionary<string, float> attacksCooldown = new Dictionary<string, float>();
     List<GameObject> activeAttacks = new List<GameObject>();
 
@@ -39,20 +45,16 @@ public class CharacterController : MonoBehaviour
 
     UnityEngine.CharacterController characterControllerComponent;
 
-    void Start()
+    public void Start()
     {
-        GameObject[] attacks = Resources.LoadAll<GameObject>("Attacks");
-
-        foreach (GameObject attack in attacks)
-        {
-            possibleAttacks.Add(attack.GetComponent<AttackMonoBehaviour>().Data.AnimationName, attack);
-        }
-
         animator = GetComponent<Animator>();
         characterControllerComponent = GetComponent<UnityEngine.CharacterController>();
 
         velocityHash = Animator.StringToHash("Velocity");
         blendYHash = Animator.StringToHash("BlendY");
+
+        footLeftTransform = gameObject.transform.GetChild(gameObject.transform.childCount - 1).Find("mixamorig:Hips").Find("mixamorig:LeftUpLeg").Find("mixamorig:LeftLeg").Find("mixamorig:LeftFoot");
+        footRightTransform = gameObject.transform.GetChild(gameObject.transform.childCount - 1).Find("mixamorig:Hips").Find("mixamorig:RightUpLeg").Find("mixamorig:RightLeg").Find("mixamorig:RightFoot");
     }
 
     RaycastHit[] GetFootsRaycast()
@@ -90,41 +92,37 @@ public class CharacterController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.E))
         {
-            SummonAttack("FireBall1");
+            SummonAttack(EquippedAttacks[0]);
         }
         if (Input.GetKey(KeyCode.Q))
         {
-            SummonAttack("GroundSpikes1");
+            SummonAttack(EquippedAttacks[1]);
         }
         if (Input.GetKey(KeyCode.F))
         {
-            SummonAttack("GroundExplosion1Attack");
+            SummonAttack(EquippedAttacks[2]);
         }
     }
 
-    void SummonAttack(string name)
+    void SummonAttack(AttackBase attack)
     {
-        GameObject prefab;
-        if (loadedPrefabs.ContainsKey("AttackPrefabs/" + name))
-            prefab = loadedPrefabs["AttackPrefabs/" + name];
-        else
-        {
-            prefab = Resources.Load<GameObject>("AttackPrefabs/" + name);
-            loadedPrefabs.Add("AttackPrefabs/" + name, prefab);
-        }
+
+        GameObject prefab = attack.Prefab;
         if (prefab != null)
         {
-            if (!attacksCooldown.ContainsKey(name))
-                attacksCooldown.Add(name, 0);
-            prefab.GetComponent<AttackMonoBehaviour>().Start();
-            bool cooldownIsOver = Time.time - attacksCooldown[name] > prefab.GetComponent<AttackMonoBehaviour>().Data.Cooldown;
+            if (!_attacksCooldown.ContainsKey(attack.name))
+                _attacksCooldown.Add(attack.name, 0);
+
+            bool cooldownIsOver = Time.time - _attacksCooldown[attack.name] > attack.Cooldown;
             if (!cooldownIsOver)
                 return;
-            attacksCooldown[name] = Time.time;
-            GameObject obj = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), CameraCenterTargetTransform.rotation);
-            AttackData attackData = prefab.GetComponent<AttackMonoBehaviour>().Data;
-            obj.GetComponent<AttackMonoBehaviour>().SetPosition(CameraCenterTargetTransform, transform);
-            obj.GetComponent<AttackMonoBehaviour>().OwnerCharacter = gameObject;
+            _attacksCooldown[attack.name] = Time.time;
+            GameObject obj = Instantiate(prefab, new Vector3(0.0f, 0.0f, 0.0f), transform.rotation);
+
+            obj.GetComponent<AttackHandler>().Start();
+            obj.GetComponent<AttackHandler>().AttackBehaviour.SetPosition(transform, transform);
+            obj.GetComponent<AttackHandler>().AttackBehaviour.CasterGameObject = gameObject;
+            obj.GetComponent<AttackHandler>().AttackBehaviour.CasterIsPlayer = true;
         }
     }
 
@@ -244,5 +242,27 @@ public class CharacterController : MonoBehaviour
     {
         characterControllerComponent.Move(rootMotion + new Vector3(0.0f, gravity * Time.fixedDeltaTime, 0.0f));
         rootMotion = Vector3.zero;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        CurrentHealth -= damage;
+        if (CurrentHealth <= 0)
+        {
+            Die();
+            return;
+        }
+        //HealthCanvasObject.GetComponent<RectTransform>().sizeDelta = new Vector2((float)(100 * (CurrentHealth / MaxHealth)), 64);
+    }
+
+    public void TakeKnockback(Vector3 knockback)
+    {
+
+    }
+
+    public void Die()
+    {
+        Destroy(gameObject);
+        SceneManager.LoadScene("MainMenuScene");
     }
 }

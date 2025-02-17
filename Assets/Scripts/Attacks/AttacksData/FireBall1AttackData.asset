@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a9b6892af9e994dbca8a3d121f7ada, type: 3}
+  m_Name: FireBall1AttackData
+  m_EditorClassIdentifier: 
+  Damage: 5
+  AreaOfEffect: 1
+  MaxEnemiesToHit: 1
+  Cooldown: 1
+  Speed: 16
+  TimeToDisappear: 5
+  SpawnMetersAhead: 1
+  AnimationName: FireBall1
+  Prefab: {fileID: 3859444828736468840, guid: 1ad236b331ede3e4f8deaa37ed9c83f3, type: 3}
+  Animator: {fileID: 0}
+  SpawnTime: 0
+  gameObject: {fileID: 0}
+  transform: {fileID: 0}
+  OwnerCharacter: {fileID: 0}

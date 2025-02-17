@@ -2,7 +2,8 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundSpikes1Attack : AttackMonoBehaviour
+[CreateAssetMenu(menuName = "Scriptable Objects/GroundSpike1")]
+public class GroundSpikes1Attack : AttackBase
 {
     public int MaxSpikes = 8;
     public int SpikesToInstantiate = 4;
@@ -15,15 +16,7 @@ public class GroundSpikes1Attack : AttackMonoBehaviour
 
     public override void Start()
     {
-        Data.Damage = 5.0f;
-        Data.AreaOfEffect = 1.0f;
-        Data.MaxEnemiesToHit = 1;
-        Data.Cooldown = 1.0f;
-        Data.Speed = 16.0f;
-        Data.TimeToDisappear = 3.0f;
-        Data.SpawnMetersAhead = 3.0f;
-        Data.SpawnTime = Time.time;
-        Data.AnimationName = "GroundSpikes1";
+
     }
 
     public void StartAnimation()
@@ -31,16 +24,17 @@ public class GroundSpikes1Attack : AttackMonoBehaviour
         //Data.Animator.Play(Data.AnimationName, 1);
     }
 
-    public void Update()
+    public override void Update()
     {
         if (Destroying)
         {
-            if(Time.time - _lastSpikeTime > TimeBetweenSpikes * 0.75f && CurrentSpikes >= 0)
+            if (Time.time - _lastSpikeTime > TimeBetweenSpikes * 0.75f && CurrentSpikes >= 0)
             {
                 Destroy(gameObject.transform.GetChild(CurrentSpikes).gameObject);
                 CurrentSpikes--;
                 _lastSpikeTime = Time.time;
-            } else if(CurrentSpikes < 0)
+            }
+            else if (CurrentSpikes < 0)
             {
                 base.Destroy();
             }
@@ -62,6 +56,10 @@ public class GroundSpikes1Attack : AttackMonoBehaviour
         GameObject newSpike = Instantiate(ObjectsToInstantiate[Random.Range(0, ObjectsToInstantiate.Count)], this.transform);
         newSpike.transform.position = hit.point + new Vector3(0.0f, 0.3f, 0.0f);
         newSpike.transform.eulerAngles = hit.normal;
+        if (newSpike.GetComponentInChildren<MeshCollider>())
+            newSpike.GetComponentInChildren<MeshCollider>().isTrigger = true;
+        else if (newSpike.GetComponentInChildren<SphereCollider>())
+            newSpike.GetComponentInChildren<SphereCollider>().isTrigger = true;
     }
 
     public override void Destroy()

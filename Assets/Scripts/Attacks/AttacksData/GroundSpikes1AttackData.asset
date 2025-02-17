@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f343b9983d12fa44aa223cac6dd53242, type: 3}
+  m_Name: GroundSpikes1AttackData
+  m_EditorClassIdentifier: 
+  Damage: 20
+  AreaOfEffect: 1
+  MaxEnemiesToHit: 32
+  Cooldown: 2
+  Speed: 16
+  TimeToDisappear: 1.5
+  SpawnMetersAhead: 0
+  AnimationName: GroundSpikes1
+  Prefab: {fileID: 3859444828736468840, guid: 4d805d534a3e96e4eb324524317cbbf7, type: 3}
+  Animator: {fileID: 0}
+  SpawnTime: 0
+  gameObject: {fileID: 0}
+  transform: {fileID: 0}
+  OwnerCharacter: {fileID: 0}
+  MaxSpikes: 4
+  SpikesToInstantiate: 4
+  CurrentSpikes: 0
+  TimeBetweenSpikes: 0.1
+  Destroying: 0
+  ObjectsToInstantiate:
+  - {fileID: 1970564158491392, guid: db615fe972cdf494eab1ad68c182cd41, type: 3}
+  - {fileID: 1600038145722832, guid: 71ae3336d12b1da4797bddcc525c6938, type: 3}
+  - {fileID: 1957529895149934, guid: 36c64110319bf5d4a85c460ab1f0ae45, type: 3}

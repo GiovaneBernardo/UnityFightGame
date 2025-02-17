@@ -1,0 +1,23 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=096f21675e0f7c945a7b11f7d8eacc92&amp;type=3#MainMenuStyle" />
+    <engine:VisualElement name="Container" style="flex-grow: 1; background-image: resource(&apos;mainMenuImage&apos;); align-items: flex-start; align-content: flex-start; align-self: auto; justify-content: flex-start; flex-direction: row;">
+        <engine:VisualElement name="Left" class="content" style="flex-grow: 1;">
+            <engine:VisualElement name="Top" style="flex-grow: 0; height: 160px; width: 640px;" />
+            <engine:VisualElement name="MainContent" style="flex-grow: 1; width: 640px; justify-content: flex-start; align-items: center; align-content: flex-start; align-self: auto;">
+                <engine:VisualElement name="Center" style="flex-grow: 1;">
+                    <engine:Label text="Main Menu" name="Header" class="header" style="width: auto; justify-content: flex-start; align-items: center; align-self: center; align-content: auto; font-size: 64px;" />
+                    <engine:Button text="Start&#10;" name="StartButton" class="mainButton" style="width: 320px; font-size: 24px;" />
+                    <engine:Button text="Quit" name="Quit" class="mainButton" style="width: 320px; font-size: 24px;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="Center" class="content" style="flex-grow: 1; align-self: auto; justify-content: center;">
+            <engine:VisualElement name="CharacterVisualizer" style="flex-grow: 0; height: 640px; width: 640px; flex-shrink: 0; background-image: url(&quot;project://database/Assets/UI/MainMenuCharacterTexture.renderTexture?fileID=8400000&amp;guid=6c8d81dcb04f2a6419dccfd2bbd8765b&amp;type=2#MainMenuCharacterTexture&quot;); background-size: 100% 100%;" />
+            <engine:VisualElement name="ButtonsContainer" style="flex-grow: 1; align-items: flex-start; justify-content: center; -unity-text-align: upper-left; flex-direction: row; flex-wrap: nowrap;">
+                <engine:Button text="&lt;" name="PreviousButton" enable-rich-text="true" />
+                <engine:Button text="&gt;" name="NextButton" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="Right" class="content" style="flex-grow: 1;" />
+    </engine:VisualElement>
+</engine:UXML>
